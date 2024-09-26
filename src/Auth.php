@@ -14,17 +14,16 @@ class Auth
     {
         $this->pdo = DB::connect();
     }
-
     public function login(string $username, string $password): void
     {
-//        dd([$username, $password]);
-        $user = (new User())->getByUsername($username, $password);
-//        dd($user);
-        if (!$user) {
+        $user = (new User())->getByUsername($username,$password);
+
+        if (!$user & !password_verify($password, $user['password'])) {
             $_SESSION['message']['error'] = "Wrong email or password";
             redirect('/login');
             return;
         }
+        $_SESSION['user_id'] = $user['id'];
         redirect('/');
         exit();
     }

@@ -33,42 +33,49 @@ class   AuthController
         $resp = json_decode($server_output);
         return $resp->status === "ok";
     }
-#[NoReturn] public function login(): void
+    public function login(): void
     {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+        $user = (new User())->getByUsername($username);
 
-        // Yandex smart captcha
-        $smartCaptchaToken = $_POST['smart-token']?? null;
-        if(!$this->check_captcha($smartCaptchaToken)) {
-            $error = 'Проверка капчи не удалась!';
-            die($error);
+//        // Foydalanuvchi ma'lumotlarini tekshirish uchun quyidagi qatorni qo'shing:
+//        var_dump($user);
+//        exit();
+
+        if (!$user || !password_verify($password, $user['password'])) {
+            $_SESSION['message']['error'] = "Wrong email or password";
+            redirect('/login');
+            return;
         }
-            (new Auth())->login($username, $password);
-            header('Location: /');
-            exit();
+
+        $_SESSION['user_id'] = $user['id'];
+        redirect('/');
+        exit();
     }
 
     public function register(): void
     {
         $name = $_POST['name'];
-        $email = $_POST['email'];
         $phone = $_POST['phone'];
+        $email = $_POST['email'];
         $password = $_POST['password'];
         $confirm_password = $_POST['confirm_password'];
-        if($password !== $confirm_password)
-        {
+
+        if($password !== $confirm_password) {
             $error = 'Пароли не совпадают';
-        }else {
+        } else {
+            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
             if ((new User())->isUserExists($name, $phone)) {
                 echo "user already exists";
             } else {
-                (new User())->createUser($name, $email, $phone, $password);
+                (new User())->createUser($name, $email, $phone, $hashed_password);
                 header("Location: /");
                 exit();
             }
         }
     }
+
     public function showUserInfo():void{
         $userGender = (new User())->getUser();
         view('auth/create-user', ['userGender' => $userGender]);

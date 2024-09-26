@@ -17,8 +17,8 @@ class User
 
     public function createUser(
         string $name,
-        string $phone,
         string $email,
+        string $phone,
         string $password
     ): false|array {
         $query = "INSERT INTO users (name, email, phone, password, created_at)
@@ -48,12 +48,11 @@ class User
         $stmt->execute(); // Execute the query
         return $stmt->fetchAll(); // Fetch the results
     }
-    public function getByUsername(string $username, string $password)
+    public function getByUsername(string $username)
     {
 //        dd([$username, $password]);
-        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email  AND password = :password");
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->bindParam(':email', $username);
-        $stmt->bindParam(':password', $password);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
