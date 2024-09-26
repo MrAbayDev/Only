@@ -13,3 +13,5 @@ Router::post('/login', fn() => (new AuthController())->login());
 
 Router::get('/register', fn()=> view('auth/register'), 'guest');
 Router::post('/register', fn()=> (new AuthController())->register());
+
+Router::get('/profile', fn() => view('auth/edit-profile'));
