@@ -7,6 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 flex">
+<?php
+
+
+/** @var TYPE_NAME $user */
+$action = "/update/$user->id";
+?>
 <?php loadPartials('sidebar'); ?>
 <div class="ml-64 flex items-center justify-center w-full min-h-screen p-8">
     <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden max-w-3xl w-full">
@@ -17,13 +23,13 @@
             <form class="mt-8 space-y-4" method="POST" action="">
                 <div class="grid grid-cols-1 gap-4">
                     <label>
-                        <input type="text" name="name" value="" placeholder="Имя" class="border rounded-md p-2 w-full dark:bg-gray-700 dark:text-white">
+                        <input type="text" name="name" value="<?= $user->name ?>" placeholder="Имя" class="border rounded-md p-2 w-full dark:bg-gray-700 dark:text-white">
                     </label>
                     <label>
-                        <input type="email" name="email" value="" placeholder="Электронная почта" class="border rounded-md p-2 w-full dark:bg-gray-700 dark:text-white">
+                        <input type="email" name="email" value="<?= $user->email ?>" placeholder="Электронная почта" class="border rounded-md p-2 w-full dark:bg-gray-700 dark:text-white">
                     </label>
                     <label>
-                        <input type="text" name="phone" value="" placeholder="Телефон" class="border rounded-md p-2 w-full dark:bg-gray-700 dark:text-white">
+                        <input type="text" name="phone" value="<?= $user->phone ?>" placeholder="Телефон" class="border rounded-md p-2 w-full dark:bg-gray-700 dark:text-white">
                     </label>
                     <label>
                         <input type="password" name="current_password" placeholder="Текущий пароль" required class="border rounded-md p-2 w-full dark:bg-gray-700 dark:text-white">

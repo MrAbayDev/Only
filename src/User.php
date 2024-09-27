@@ -33,10 +33,9 @@ class User
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getUser(int $id)
+    public function getUser(int $id): bool|array
     {
-        $query = "SELECT * FROM users WHERE id = :id";
-        $stmt  = $this->pdo->prepare($query);
+        $stmt  = $this->pdo->prepare("SELECT * FROM users WHERE id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);
@@ -45,12 +44,11 @@ class User
     {
         $query = "SELECT * FROM users";
         $stmt  = $this->pdo->prepare($query);
-        $stmt->execute(); // Execute the query
-        return $stmt->fetchAll(); // Fetch the results
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
     public function getByUsername(string $username)
     {
-//        dd([$username, $password]);
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->bindParam(':email', $username);
         $stmt->execute();

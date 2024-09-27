@@ -53,11 +53,6 @@ class Router
                             exit();
                         }
                     }
-                    if ($path === parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) {
-                        (new Authentication())->handle($middleware);
-                        $callback();
-                        exit();
-                    }
                 }
             }
         }
